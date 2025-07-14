@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Post Title | NewsFlash</title>
+    <link rel="stylesheet" href="./assets/css/main.css" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <style>
+        .post-container {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 0 20px;
+            color: var(--light-color-alt);
+        }
+
+        .post-title {
+            font-size: 3.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--light-color);
+        }
+
+        .post-meta {
+            font-size: 1.4rem;
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .post-hero {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .post-content h2 {
+            font-size: 2.4rem;
+            color: var(--light-color);
+            margin: 30px 0 15px;
+        }
+
+        .post-content p {
+            font-size: 1.6rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .post-content a {
+            color: var(--light-color);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .post-content a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-color);
+            transition: width 0.4s ease 0.2s, left 0.4s ease 0.2s;
+        }
+
+        .post-content a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .post-content a:hover {
+            color: var(--light-color);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header" id="header">
+    <nav class="navbar container">
+        <a href="./index.html">
+            <h2 class="logo">Braxton Krusemark</h2>
+        </a>
+        <!-- Reuse your existing nav here -->
+    </nav>
+</header>
+
+<!-- Post Content -->
+<main class="post-container">
+    <h1 class="post-title">About Me</h1>
+    <p class="post-meta">By Braxton Krusemark • July 14, 2025</p>
+
+    <img src="assets/images/aboutme.png" alt="Post Hero Image" class="post-hero" />
+
+    <div class="post-content">
+        <p>Hello! I am Braxton Krusemark, and this is the beginning of my blog! I'm very excited to share lots of my experiences and projects with the internet. However, before I delve into that, I'll show you my statistics (Gotta brag a little.)</p>
+
+        <h2>Schooling</h2>
+        <p>I currently am in High School as of writing this, and I'm about to go into my Junior Year. I am also dual enrolled full time at Western Iowa Tech, where I am pursuing an Associate's in <a href="https://www.witcc.edu/programs/5/">Cybersecurity and Digital Crime.</a></p>
+
+        <h2>Extracurricular Activities</h2>
+        <p>I am in Robotics, and I founded the Chess Club at my High School. During the Summer, I help the high school IT director with the Chromebooks, and a few other special projects (Labeling all the Ethernet Ports in the School District, Cleaning tech in rooms, etc.)</p>
+
+        <h2>Planned Blogs</h2>
+        <p>My main goal with this blog is to document things I learn throughout my Associate's program, and things I have learned that are techy. I also want to document some projects I have going on. </p>
+
+        <p>I also want to try and get some certifications for IT to test myself, but we'll see how that goes! I hope you enjoy this blog!</p>
+         </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <p >DISCLAIMER!!! The image used in the thumbnail and above is AI-Generated. I take no credit for creating this work, and I do not support AI-Generated art.</p>
+
+</footer>
+
+</body>
+</html>
