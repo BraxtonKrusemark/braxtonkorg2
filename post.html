@@ -107,7 +107,85 @@
         <p>My main goal with this blog is to document things I learn throughout my Associate's program, and things I have learned that are techy. I also want to document some projects I have going on. </p>
 
         <p>I also want to try and get some certifications for IT to test myself, but we'll see how that goes! I hope you enjoy this blog!</p>
-         </div>
+        <section class="comments-section">
+            <h3>Comments</h3>
+            <form id="comment-form">
+                <input type="text" id="name" placeholder="Your name" required>
+                <textarea id="message" placeholder="Write a comment..." required></textarea>
+                <button type="submit">Post Comment</button>
+            </form>
+
+            <div id="comments-container"></div>
+        </section>
+
+    </div>
+
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <!-- Your Firebase config -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDwQKyX508jsz8A0HEEWfBMCB3UzjqmVJE",
+            authDomain: "braxtonkorg.firebaseapp.com",
+            projectId: "braxtonkorg",
+            storageBucket: "braxtonkorg.firebasestorage.app",
+            messagingSenderId: "271720840353",
+            appId: "1:271720840353:web:e774925f67bc4fb70d04e0",
+            measurementId: "G-3WHSQQ6Q1G"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+    </script>
+
+    <script>
+        const form = document.getElementById('comment-form');
+        const nameInput = document.getElementById('name');
+        const messageInput = document.getElementById('message');
+        const commentsContainer = document.getElementById('comments-container');
+
+        // Replace this with your actual post ID (you can get from URL or set manually)
+        const postId = "about-me";
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            await db.collection('comments').add({
+                name: nameInput.value,
+                message: messageInput.value,
+                postId: postId,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            nameInput.value = '';
+            messageInput.value = '';
+        });
+
+        // Fetch and render comments
+        db.collection('comments')
+            .where('postId', '==', postId)
+            .orderBy('timestamp', 'desc')
+            .onSnapshot(snapshot => {
+                commentsContainer.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const comment = document.createElement('div');
+                    comment.classList.add('comment');
+                    comment.innerHTML = `
+          <p><strong>${data.name}</strong> says:</p>
+          <p>${data.message}</p>
+        `;
+                    commentsContainer.appendChild(comment);
+                });
+            });
+    </script>
+
+
 </main>
 
 <!-- Footer -->
