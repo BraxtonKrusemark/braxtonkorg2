@@ -204,7 +204,8 @@ body{
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
-    transition: transform 0.3s ease;
+    transition: opacity 0.3s ease;
+    opacity: 1;
 }
 
 .featured-article:hover {
@@ -327,8 +328,101 @@ body{
 .featured-article a:hover .article-title {
     color: #4fcf70;
 }
-/* Featured articles - Sidebar */
+/*Makes the articles fade in when sorted by category section*/
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
+.featured-article {
+    animation: fadeIn 0.5s ease both;
+}
+/* Category Section */
+.category-filter {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.category-title {
+    font-size: 3.2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #ffffff;
+    letter-spacing: 1px;
+    display: inline-block;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.category-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #4fcf70, #fad648, #a767e5);
+    border-radius: 2px;
+}
+
+.category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+.fade-in {
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease forwards;
+}
+.filter-btn {
+    padding: 0.7rem 1.8rem;
+    background: none;
+    border: 2px solid #4fcf70;
+    color: #4fcf70;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: #4fcf70;
+    color: #000;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 /* Quick read */
 
 /* Quick read - Swiper */
