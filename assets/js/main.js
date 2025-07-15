@@ -9,8 +9,18 @@ window.addEventListener("scroll", () => {
         header.classList.remove("shrink");
     }
 });
-// Open menu & search pop-up
+// Hamburger menu toggle
+const menuToggle = document.getElementById("menu-toggle");
+const menu = document.getElementById("menu");
 
+menuToggle.addEventListener("click", () => {
+    menu.classList.toggle("open");
+
+    // Toggle icon between hamburger and close
+    const icon = menuToggle.querySelector("i");
+    icon.classList.toggle("ri-menu-line");
+    icon.classList.toggle("ri-close-line");
+});
 // Open/Close search form popup
 
 // -- Close the search form popup on ESC keypress
