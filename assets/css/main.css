@@ -307,6 +307,7 @@ body{
         background-color: var(--prim-background-color);
         padding: 0 2rem;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        display: block;
     }
 
     .menu.open {
