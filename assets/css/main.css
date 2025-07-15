@@ -286,7 +286,21 @@ body{
     width: 100%;
     height: auto;
 }
-
+.article-category {
+    display: inline-block;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #4fcf70;
+    background-color: rgba(79, 207, 112, 0.1);
+    padding: 0.4rem 0.8rem;
+    border-radius: 12px;
+    margin: 1rem auto 0.8rem; /* pushes it lower */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    display: block;
+    width: fit-content;
+}
 .article-title {
     font-size: 2rem;
     font-weight: 600;
@@ -426,8 +440,53 @@ body{
         transform: translateY(0);
     }
 }
-/* Quick read */
+/* Comment Section */
+.comments-section {
+    margin-top: 2rem;
+    background: #1e1e1e;
+    padding: 1rem;
+    border-radius: 6px;
+}
 
+#comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#comment-form input,
+#comment-form textarea {
+    padding: 1rem;
+    border: none;
+    border-radius: 6px;
+    background: #2a2a2a;
+    color: white;
+    resize: vertical; /* only allows up/down resizing */
+    max-width: 100%;
+}
+
+#comment-form button {
+    padding: 1rem;
+    background: var(--gradient-color);
+    color: black;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.comment {
+    margin-top: 2rem;
+    background: #2d2d2d;
+    padding: 1rem;
+    border-radius: 6px;
+}
+
+
+.comments-section {
+    max-width: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
+}
 /* Quick read - Swiper */
 
 /* Older posts */
