@@ -120,59 +120,66 @@
         </section>
 
     </div>
+    
 
-
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK (Compat Version) -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-    <!-- Your Firebase config -->
+    <!-- Firebase Init & Comment Script -->
     <script>
+        // Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyDwQKyX508jsz8A0HEEWfBMCB3UzjqmVJE",
             authDomain: "braxtonkorg.firebaseapp.com",
             projectId: "braxtonkorg",
-            storageBucket: "braxtonkorg.firebasestorage.com",
+            storageBucket: "braxtonkorg.appspot.com", // ✅ FIXED typo here
             messagingSenderId: "271720840353",
             appId: "1:271720840353:web:e774925f67bc4fb70d04e0",
             measurementId: "G-3WHSQQ6Q1G"
         };
 
-        // Initialize Firebase
+        // Init Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-    </script>
-
-    <script>
         const form = document.getElementById('comment-form');
         const nameInput = document.getElementById('name');
         const messageInput = document.getElementById('message');
         const commentsContainer = document.getElementById('comments-container');
 
-        // Replace this with your actual post ID (you can get from URL or set manually)
-        const postId = "about-me";
+        const postId = "about-me"; // Change per-post
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            await db.collection('comments').add({
-                name: nameInput.value,
-                message: messageInput.value,
-                postId: postId,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            try {
+                await db.collection('comments').add({
+                    name: nameInput.value.trim(),
+                    message: messageInput.value.trim(),
+                    postId: postId,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
 
-            nameInput.value = '';
-            messageInput.value = '';
+                nameInput.value = '';
+                messageInput.value = '';
+            } catch (err) {
+                console.error("🔥 Error saving comment:", err);
+            }
         });
 
-        // Fetch and render comments
+        // Load & display comments
         db.collection('comments')
             .where('postId', '==', postId)
             .orderBy('timestamp', 'desc')
             .onSnapshot(snapshot => {
                 commentsContainer.innerHTML = '';
+
+                if (snapshot.empty) {
+                    commentsContainer.innerHTML = `<p>No comments yet. Be the first!</p>`;
+                    return;
+                }
+
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const comment = document.createElement('div');
@@ -183,9 +190,11 @@
         `;
                     commentsContainer.appendChild(comment);
                 });
+            }, err => {
+                console.error("❌ Failed to fetch comments:", err);
+                commentsContainer.innerHTML = `<p>Error loading comments. Try refreshing the page.</p>`;
             });
     </script>
-
 
 </main>
 
