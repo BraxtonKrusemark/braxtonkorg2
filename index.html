@@ -1,110 +1,138 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>BraxtonK.org | Home</title>
+
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon.png">
-    <!-- Remix icons -->
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    <!-- Swiper.js styles -->
-    <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css"/>
-    <!-- Custom styles -->
-    <link rel="stylesheet" href="./assets/css/main.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4232003815733784"
-     crossorigin="anonymous"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon.png" />
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" />
+
+    <!-- Swiper (future use) -->
+    <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css" />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="./assets/css/main.css" />
+
+    <!-- AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4232003815733784" crossorigin="anonymous"></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header" id="header">
 
-        <nav class="navbar container">
+<!-- Header -->
+<header class="header" id="header">
+    <nav class="navbar container">
+        <a href="./index.html"><h2 class="logo">Braxton Krusemark</h2></a>
 
-            <a href="./index.html">
-            <h2 class="logo">Braxton Krusemark</h2>
+        <div class="menu-toggle" id="menu-toggle">
+            <i class="ri-menu-line"></i>
+        </div>
+
+        <div class="menu" id="menu">
+            <ul class="list">
+                <li><a href="#" class="list-link current">Home</a></li>
+                <li><a href="#categories-section" class="list-link">Categories</a></li>
+                <li><a href="#" class="list-link">Reviews</a></li>
+                <li><a href="#" class="list-link">News</a></li>
+                <li><a href="#" class="list-link">Membership</a></li>
+                <li><a href="#" class="list-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<!-- Featured Articles -->
+<section class="featured-articles-section">
+    <h2 class="featured-title">Featured Articles</h2>
+
+    <div class="featured-articles-grid">
+        <!-- Static Featured Example -->
+        <div class="featured-article" data-category="tech">
+            <a href="post.html?id=aboutme">
+                <img src="assets/images/aboutme.png" alt="About Me" class="featured-image" />
+                <span class="article-category">Tech</span>
+                <h3 class="article-title">About Me</h3>
             </a>
-
-            <!-- Hamburger Icon!-->
-            <div class="menu-toggle" id="menu-toggle">
-                <i class="ri-menu-line"></i>
-            </div>
-
-            <div class="menu" id="menu">
-                <ul class="list">
-                    <li class="list-item">
-                        <a href="#" class="list-link current">Home</a>
-                    </li>
-                    <li class="list-item">
-                        <a href="#categories-section" class="list-link">Categories</a>
-                    </li>
-                    </li>
-                    <li class="list-item">
-                        <a href="#" class="list-link">Reviews</a>
-                    </li>
-                    <li class="list-item">
-                        <a href="#" class="list-link">News</a>
-                    </li>
-                    <li class="list-item">
-                        <a href="#" class="list-link">Membership</a>
-                    </li>
-                    <li class="list-item">
-                        <a href="#" class="list-link">Contact</a>
-                    </li>
-                </ul>
-            </div>
-
-        </nav>
-    </header>
-    <!-- Search -->
-
-    <!-- Featured Articles Section -->
-    <section class="featured-articles-section">
-        <h2 class="featured-title">Featured Articles</h2>
-
-        <div class="featured-articles-grid">
-            <!-- Featured Article 1 -->
-            <div class="featured-article">
-                <a href="post.html">
-                    <img src="assets/images/aboutme.png"  alt="Featured Article 1" class="featured-image">
-                    <h3 class="article-title">About Me</h3>
-                </a>
-            </div>
-
-            <!-- Featured Article 2 -->
-            <div class="featured-article" data-category="tech">
-                <a href="blog-post-2.html">
-                    <img src="path/to/your/image2.jpg" alt="Featured Article 2" class="featured-image">
-                    <h3 class="article-title">Title of the Second Article</h3>
-                </a>
-            </div>
         </div>
-    </section>
 
-    <!-- Category Section!-->
-    <section class="category-filter", id="categories-section">
-        <h2 class="category-title">Browse by Category</h2>
-        <div class="category-buttons">
-            <button class="filter-btn active" data-category="all">All</button>
-            <button class="filter-btn" data-category="tech">Tech</button>
-            <button class="filter-btn" data-category="reviews">Reviews</button>
-            <button class="filter-btn" data-category="news">News</button>
-            <button class="filter-btn" data-category="tutorials">Tutorials</button>
+        <div class="featured-article" data-category="tech">
+            <a href="blog-post-2.html">
+                <img src="path/to/your/image2.jpg" alt="Article 2" class="featured-image" />
+                <h3 class="article-title">Title of the Second Article</h3>
+            </a>
         </div>
+    </div>
+
+    <!-- Dynamic Posts from Firestore -->
+    <section class="post-list">
+        <h2>Latest Posts</h2>
+        <div id="posts-container" class="posts-grid"></div>
     </section>
-    <!-- Quick read -->
+</section>
 
-    <!-- Older posts -->
-    
-    <!-- Popular tags -->
+<!-- Category Section -->
+<section class="category-filter" id="categories-section">
+    <h2 class="category-title">Browse by Category</h2>
+    <div class="category-buttons">
+        <button class="filter-btn active" data-category="all">All</button>
+        <button class="filter-btn" data-category="tech">Tech</button>
+        <button class="filter-btn" data-category="reviews">Reviews</button>
+        <button class="filter-btn" data-category="news">News</button>
+        <button class="filter-btn" data-category="tutorials">Tutorials</button>
+    </div>
+</section>
 
-    <!-- Newsletter -->
-    
-    <!-- Footer -->
+<!-- Scripts -->
+<script src="./assets/js/swiper-bundle.min.js"></script>
+<script src="./assets/js/main.js" defer></script>
 
-    <!-- Swiper.js -->
-    <script src="./assets/js/swiper-bundle.min.js"></script>
-    <!-- Custom script -->
-    <script src="./assets/js/main.js"></script>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<!-- Firebase Config + Post Fetching -->
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyDwQKyX508jsz8A0HEEWfBMCB3UzjqmVJE",
+        authDomain: "braxtonkorg.firebaseapp.com",
+        projectId: "braxtonkorg",
+        storageBucket: "braxtonkorg.appspot.com",
+        messagingSenderId: "271720840353",
+        appId: "1:271720840353:web:e774925f67bc4fb70d04e0"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const postsContainer = document.getElementById('posts-container');
+
+    db.collection('posts')
+        .orderBy('timestamp', 'desc')
+        .limit(6)
+        .onSnapshot(snapshot => {
+            postsContainer.innerHTML = '';
+            snapshot.forEach(doc => {
+                const post = doc.data();
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                card.innerHTML = `
+                    <a href="post.html?id=${doc.id}" class="post-link">
+                    <img src="${post.thumbnailURL || 'assets/images/placeholder.png'}" alt="${post.title}" class="post-thumb" />
+                    <div class="post-info">
+                      <h3>${post.title}</h3>
+                      <p class="post-meta">${post.category} • ${post.author || 'Anonymous'}</p>
+                      <p class="post-excerpt">${(post.content || '').replace(/<[^>]+>/g, '').substring(0, 100)}...</p>
+                    </div>
+                  </a>
+    `;
+                postsContainer.appendChild(card);
+            });
+        });
+</script>
+
 </body>
 </html>
