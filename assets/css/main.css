@@ -395,3 +395,51 @@ body {
     font-size: 0.95rem;
     line-height: 1.4;
 }
+/* About Me */
+.about-section, .skills-section, .contact-section {
+    padding: 4rem 1rem;
+    max-width: 900px;
+    margin: auto;
+}
+
+.about-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.about-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.about-content img.about-image {
+    max-width: 250px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.about-text p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.skills-list {
+    list-style: none;
+    padding: 0;
+}
+
+.skills-list li {
+    background: #424141;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+}
+
+.contact-section a {
+    color: #007acc;
+    text-decoration: underline;
+}
+.skills-list-text {
+    color: var(--primary);
+}
