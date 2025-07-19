@@ -372,8 +372,8 @@ body {
 }
 
 .post-thumb {
-  height: 200px; /* or 150px */
-  object-fit: cover;
+    height: 200px; /* or 150px */
+    object-fit: cover;
 }
 
 .post-info {
