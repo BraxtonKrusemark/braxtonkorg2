@@ -443,3 +443,66 @@ body {
 .skills-list-text {
     color: var(--primary);
 }
+/* === Responsive Fixes for Mobile === */
+@media screen and (max-width: 768px) {
+    /* Featured Articles */
+    .featured-articles-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .featured-article {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .featured-article img.featured-image {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    .featured-article .article-title {
+        font-size: 1.2rem;
+        margin-top: 0.5rem;
+        text-align: center;
+    }
+
+    .article-category {
+        font-size: 0.85rem;
+        margin-top: 0.3rem;
+        background-color: rgba(0, 0, 0, 0.05);
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
+
+    /* Latest Posts Grid */
+    .posts-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .post-card {
+        padding: 1rem;
+        border-radius: 8px;
+    }
+
+    .post-thumb {
+        width: 100%;
+        max-height: 180px;
+        object-fit: cover;
+        border-radius: 6px;
+    }
+
+    .post-info h3 {
+        font-size: 1.1rem;
+        margin: 0.5rem 0;
+    }
+
+    .post-meta, .post-excerpt {
+        font-size: 0.9rem;
+    }
+}
