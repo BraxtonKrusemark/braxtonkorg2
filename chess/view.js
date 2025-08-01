@@ -1,4 +1,3 @@
-
 const SUPABASE_URL = 'https://iocetaelftxbexanzwnx.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvY2V0YWVsZnR4YmV4YW56d254Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NDAxODc3MiwiZXhwIjoyMDY5NTk0NzcyfQ.CEyPFT4YjYmPYpd6oBgl9Ox_MPvpJVCehodx0CBkLxg';
 
@@ -9,22 +8,38 @@ const statsDiv = document.getElementById('player-stats');
 const attendanceDiv = document.getElementById('attendance-view');
 
 async function fetchAndRender() {
-    const { data: players, error: pErr } = await supa.from('players').select();
-    const { data: matches, error: mErr } = await supa.from('matches').select();
-    const { data: attendance, error: aErr } = await supa.from('attendance').select();
+    try {
+        const { data: players, error: pErr } = await supa.from('players').select();
+        const { data: matches, error: mErr } = await supa.from('matches').select();
+        const { data: attendance, error: aErr } = await supa.from('attendance').select();
 
-    if (pErr || mErr || aErr) {
-        statsDiv.innerHTML = `<p>Error loading data.</p>`;
-        return;
+        if (pErr) {
+            statsDiv.innerHTML = `<p style="color:red;">Error loading players: ${pErr.message}</p>`;
+            return;
+        }
+        if (mErr) {
+            statsDiv.innerHTML = `<p style="color:red;">Error loading matches: ${mErr.message}</p>`;
+            return;
+        }
+        if (aErr) {
+            attendanceDiv.innerHTML = `<p style="color:red;">Error loading attendance: ${aErr.message}</p>`;
+            return;
+        }
+
+        renderStats(players, matches);
+        renderAttendance(attendance, players);
+    } catch (err) {
+        statsDiv.innerHTML = `<p style="color:red;">Unexpected error: ${err.message}</p>`;
     }
-
-    renderStats(players, matches);
-    renderAttendance(attendance, players);
 }
 
 function renderStats(players = [], matches = []) {
-    // Similar to your existing renderStats but no editing UI
     statsDiv.innerHTML = '';
+    if (players.length === 0) {
+        statsDiv.innerHTML = '<p>No players found.</p>';
+        return;
+    }
+
     players.forEach(p => {
         const head2head = {};
         players.filter(o => o.id !== p.id).forEach(o => {
@@ -32,8 +47,8 @@ function renderStats(players = [], matches = []) {
         });
 
         matches.forEach(m => {
-            if (m.winner_id === p.id && head2head[m.loser_id]) head2head[m.loser_id].wins++;
-            if (m.loser_id === p.id && head2head[m.winner_id]) head2head[m.winner_id].losses++;
+            if (String(m.winner_id) === String(p.id) && head2head[m.loser_id]) head2head[m.loser_id].wins++;
+            if (String(m.loser_id) === String(p.id) && head2head[m.winner_id]) head2head[m.winner_id].losses++;
         });
 
         const tableRows = Object.values(head2head).map(h => {
