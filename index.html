@@ -38,7 +38,7 @@
                 <li><a href="#categories-section" class="list-link">Categories</a></li>
                 <li><a href="#" class="list-link">Reviews</a></li>
                 <li><a href="#" class="list-link">News</a></li>
-                <li><a href="about.html" class="list-link">About Me</a></li>
+                <li><a href="#" class="list-link">Membership</a></li>
                 <li><a href="#" class="list-link">Contact</a></li>
             </ul>
         </div>
@@ -50,13 +50,16 @@
     <h2 class="featured-title">Featured Articles</h2>
 
     <div class="featured-articles-grid">
-
+        <!-- Static Featured Example -->
         <div class="featured-article" data-category="tech">
-            <a href="blog-post-2.html">
-                <img src="path/to/your/image2.jpg" alt="Article 2" class="featured-image" />
-                <h3 class="article-title">Title of the Second Article</h3>
+            <a href="about.html">
+                <img src="assets/images/aboutme.png" alt="About Me" class="featured-image" />
+                <span class="article-category">Tech</span>
+                <h3 class="article-title">About Me</h3>
             </a>
         </div>
+
+
     </div>
 
     <!-- Dynamic Posts from Firestore -->
@@ -85,6 +88,7 @@
 <!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
 <!-- Firebase Config + Post Fetching -->
 <script>
     const firebaseConfig = {
@@ -106,49 +110,24 @@
         .limit(6)
         .onSnapshot(snapshot => {
             postsContainer.innerHTML = '';
-
             snapshot.forEach(doc => {
                 const post = doc.data();
                 const card = document.createElement('div');
                 card.className = 'post-card';
-                card.setAttribute('data-category', post.category?.toLowerCase() || 'uncategorized');
-
                 card.innerHTML = `
                     <a href="post.html?id=${doc.id}" class="post-link">
-                        <img src="${post.thumbnailURL || 'assets/images/placeholder.png'}" alt="${post.title}" class="post-thumb" />
-                        <div class="post-info">
-                            <h3>${post.title}</h3>
-                            <p class="post-meta">${post.category} • ${post.author || 'Anonymous'}</p>
-                            <p class="post-excerpt">${(post.content || '').replace(/<[^>]+>/g, '').substring(0, 100)}...</p>
-                        </div>
-                    </a>
-                `;
-
+                    <img src="${post.thumbnailURL || 'assets/images/placeholder.png'}" alt="${post.title}" class="post-thumb" />
+                    <div class="post-info">
+                      <h3>${post.title}</h3>
+                      <p class="post-meta">${post.category} • ${post.author || 'Anonymous'}</p>
+                      <p class="post-excerpt">${(post.content || '').replace(/<[^>]+>/g, '').substring(0, 100)}...</p>
+                    </div>
+                  </a>
+    `;
                 postsContainer.appendChild(card);
-            });
-
-            // 🔁 Enable filtering after posts are rendered
-            const filterButtons = document.querySelectorAll('.filter-btn');
-
-            filterButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-
-                    const selectedCategory = button.getAttribute('data-category');
-                    const postCards = document.querySelectorAll('.post-card');
-
-                    postCards.forEach(card => {
-                        const cardCategory = card.getAttribute('data-category');
-                        if (selectedCategory === 'all' || cardCategory === selectedCategory) {
-                            card.style.display = 'block';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-                });
             });
         });
 </script>
+
 </body>
 </html>
