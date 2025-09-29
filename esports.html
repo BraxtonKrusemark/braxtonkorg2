@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scoreboard Display</title>
+  <style>
+    body {
+      background-color: rgba(0, 0, 0, 0); /* Transparent for OBS */
+      font-family: Arial, sans-serif;
+      color: white;
+      font-size: 32px;
+      padding: 20px;
+      margin: 0;
+    }
+
+    #scoreboard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+    }
+
+    .player-box {
+      text-align: center;
+      background-color: rgba(30, 30, 30, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      min-width: 180px;
+    }
+
+    .score {
+      font-size: 48px;
+      margin-top: 10px;
+    }
+  </style>
+
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body>
+  <div id="scoreboard"></div>
+
+  <script>
+    // ✅ Paste your Firebase config here
+    const firebaseConfig = {
+      apiKey: "AIzaSyCQko6oHQQCQoIOSSSaFlEfXkKpw-Spuy0",
+      authDomain: "e-sports-65c6d.firebaseapp.com",
+      databaseURL: "https://e-sports-65c6d-default-rtdb.firebaseio.com/",
+      projectId: "e-sports-65c6d",
+      storageBucket: "e-sports-65c6d.appspot.com",
+      messagingSenderId: "400472525925",
+      appId: "1:400472525925:web:9993889baf5ebf88e1ca8c"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function render(players) {
+      const container = document.getElementById("scoreboard");
+      container.innerHTML = "";
+
+      for (const name in players) {
+        const box = document.createElement("div");
+        box.className = "player-box";
+        box.innerHTML = `
+          <div class="name">${name}</div>
+          <div class="score">${players[name]}</div>
+        `;
+        container.appendChild(box);
+      }
+    }
+
+    // Realtime listener
+    db.ref("scoreboardPlayers").on("value", (snapshot) => {
+      const players = snapshot.val() || {};
+      render(players);
+    });
+  </script>
+</body>
+</html>
