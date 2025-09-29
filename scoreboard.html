@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scoreboard Admin</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: white;
+      padding: 20px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      margin-right: 10px;
+      border-radius: 5px;
+      border: none;
+      width: 200px;
+    }
+    .score-box {
+      background: #222;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 10px 0;
+    }
+    .score {
+      font-size: 36px;
+    }
+  </style>
+</head>
+<body>
+ <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <h1>Scoreboard Admin</h1>
+
+  <h2>Select Players:</h2>
+  <div>
+	<h3> Seniors </h3>
+    <button onclick="addPlayer('Ryu = Kaiden Curtis (Cherokee Senior)')">Kaiden</button>
+    <button onclick="addPlayer('Cloud = Tyler Dobson (Cherokee Senior)')">Tyler</button>
+	<h3> Juniors </h3>
+    <button onclick="addPlayer('Ness = Gavin Burch (Cherokee Junior)')">Gavin</button>
+    <button onclick="addPlayer('Kazuya = Seth Blood (Cherokee Junior)')">Seth</button>
+    <button onclick="addPlayer('Link = Landon Todd (Cherokee Junior)')">Landon</button>
+	<h3> Sophomores </h3>
+    <button onclick="addPlayer('Ganondorf = Carter Hofer (Cherokee Sophomore)')">Carter</button>
+    <button onclick="addPlayer('Corrin = Brayden Kelly (Cherokee Sophomore) ')">Brayden Kelly</button>
+    <button onclick="addPlayer('Lucario = Lily Bumann (Cherokee Sophomore)')">Lily Bumann</button>
+	<h3> Freshmen </h3>
+    <button onclick="addPlayer('Greninja = Chris Webb (Cherokee Freshman)')">Chris</button>
+    <button onclick="addPlayer('Kirby = Aurora Peed (Cherokee Freshman)')">Aurora</button>
+  </div>
+
+<h2>Add Custom Player (e.g., Enemy Team):</h2>
+<div style="display: flex; align-items: center; gap: 10px;">
+  <input type="text" id="customPlayerInput" placeholder="Enter name..." />
+  <button onclick="addCustomPlayer()">Add Player</button>
+</div>
+
+  <h2>Active Players & Score</h2>
+  <div id="control-area"></div>
+
+    <script>
+    // ✅ Your Firebase Config — replace these with your real values
+    const firebaseConfig = {
+      apiKey: "AIzaSyCQko6oHQQCQoIOSSSaFlEfXkKpw-Spuy0",
+      authDomain: "e-sports-65c6d.firebaseapp.com",
+      databaseURL: "https://e-sports-65c6d-default-rtdb.firebaseio.com/",
+      projectId: "e-sports-65c6d",
+      storageBucket: "e-sports-65c6d.appspot.com",
+      messagingSenderId: "400472525925",
+      appId: "1:400472525925:web:9993889baf5ebf88e1ca8c"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const dbRef = db.ref("scoreboardPlayers");
+
+    let players = {};
+
+    // Realtime sync from Firebase
+    dbRef.on("value", (snapshot) => {
+      players = snapshot.val() || {};
+      render();
+    });
+
+    function savePlayers() {
+      dbRef.set(players);
+    }
+
+    function addPlayer(name) {
+      if (!players[name]) {
+        players[name] = 0;
+        savePlayers();
+      }
+    }
+
+    function addCustomPlayer() {
+      const input = document.getElementById("customPlayerInput");
+      const name = input.value.trim();
+      if (name !== "") {
+        addPlayer(name);
+        input.value = "";
+      }
+    }
+
+    function changeScore(name, delta) {
+      if (players[name] !== undefined) {
+        players[name] += delta;
+        savePlayers();
+      }
+    }
+
+    function removePlayer(name) {
+      delete players[name];
+      savePlayers();
+    }
+
+    function render() {
+      const container = document.getElementById("control-area");
+      container.innerHTML = "";
+
+      for (const name in players) {
+        const div = document.createElement("div");
+        div.className = "score-box";
+        div.innerHTML = `
+          <h3>${name}</h3>
+          <div class="score">${players[name]}</div>
+          <button onclick="changeScore('${name}', 1)">+1</button>
+          <button onclick="changeScore('${name}', -1)">-1</button>
+          <button onclick="removePlayer('${name}')">Remove</button>
+        `;
+        container.appendChild(div);
+      }
+    }
+  </script>
+</body>
+</html>
+</body>
+</html>
