@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chromebook Checkout System</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    padding:20px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.header{
+    background:#0f4c81;
+    color:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+    margin-bottom:20px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:15px;
+}
+
+label{
+    font-weight:bold;
+    margin-bottom:5px;
+    display:block;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+button{
+    border:none;
+    padding:10px 18px;
+    border-radius:6px;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
+}
+
+.checkout{
+    background:#28a745;
+}
+
+.checkin{
+    background:#007bff;
+}
+
+.export{
+    background:#6f42c1;
+}
+
+.delete{
+    background:#dc3545;
+    padding:6px 10px;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+    flex-wrap:wrap;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#0f4c81;
+    color:white;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
+}
+
+.status-out{
+    color:#dc3545;
+    font-weight:bold;
+}
+
+.status-in{
+    color:#28a745;
+    font-weight:bold;
+}
+
+.search{
+    margin-bottom:15px;
+}
+
+.stats{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.stat{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    min-width:200px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.stat h2{
+    color:#0f4c81;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+    <h1>Chromebook Checkout System</h1>
+    <p>Scan Chromebook Asset Tags with Barcode Scanner</p>
+</div>
+
+<div class="stats">
+    <div class="stat">
+        <h2 id="totalAssets">0</h2>
+        <p>Total Records</p>
+    </div>
+
+    <div class="stat">
+        <h2 id="checkedOut">0</h2>
+        <p>Checked Out</p>
+    </div>
+
+    <div class="stat">
+        <h2 id="returned">0</h2>
+        <p>Returned</p>
+    </div>
+</div>
+
+<br>
+
+<div class="card">
+
+<div class="form-grid">
+
+<div>
+<label>Asset Number (Scan Here)</label>
+<input
+type="text"
+id="asset"
+placeholder="Scan barcode..."
+autofocus>
+</div>
+
+<div>
+<label>Student Name</label>
+<input
+type="text"
+id="student"
+placeholder="Student Name">
+</div>
+
+</div>
+
+<div class="actions">
+<button class="checkout" onclick="checkout()">Check Out</button>
+<button class="checkin" onclick="checkin()">Check In</button>
+<button class="export" onclick="exportCSV()">Export CSV</button>
+</div>
+
+</div>
+
+<div class="card">
+
+<input
+class="search"
+type="text"
+id="search"
+placeholder="Search Asset Number or Student"
+onkeyup="renderTable()">
+
+<table>
+
+<thead>
+<tr>
+<th>Asset #</th>
+<th>Student</th>
+<th>Checked Out</th>
+<th>Checked In</th>
+<th>Status</th>
+<th>Delete</th>
+</tr>
+</thead>
+
+<tbody id="tableBody"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+const assetInput = document.getElementById("asset");
+const studentInput = document.getElementById("student");
+
+assetInput.addEventListener("input", function () {
+    // Remove spaces
+    this.value = this.value.trim();
+
+    // Move to Student field after 5 characters
+    if (this.value.length >= 5) {
+        studentInput.focus();
+        studentInput.select();
+    }
+});
+
+let historyRecords =
+JSON.parse(localStorage.getItem("historyRecords")) || [];
+
+let records = JSON.parse(localStorage.getItem("chromebooks")) || [];
+
+function saveData(){
+
+    localStorage.setItem(
+        "chromebooks",
+        JSON.stringify(records)
+    );
+
+    localStorage.setItem(
+        "historyRecords",
+        JSON.stringify(historyRecords)
+    );
+
+    updateStats();
+}
+
+function getDateTime(){
+    return new Date().toLocaleString();
+}
+
+function checkout(){
+
+    const asset =
+    document.getElementById("asset").value.trim();
+
+    const student =
+    document.getElementById("student").value.trim();
+
+    if(!asset || !student){
+        alert("Scan asset and enter student.");
+        return;
+    }
+
+    records.push({
+        asset,
+        student,
+        out:getDateTime(),
+        in:"",
+        status:"Checked Out"
+    });
+
+    saveData();
+    renderTable();
+    clearForm();
+}
+
+function checkin() {
+
+    const asset =
+    document.getElementById("asset").value.trim();
+
+    if(!asset){
+        alert("Scan Chromebook barcode.");
+        return;
+    }
+
+    let found = false;
+
+    for(let i = records.length - 1; i >= 0; i--){
+
+        if(records[i].asset === asset){
+
+            const completedRecord = {
+                ...records[i],
+                in: getDateTime(),
+                status: "Returned"
+            };
+
+            // Save to history
+            historyRecords.push(completedRecord);
+
+            // Remove from active checkouts
+            records.splice(i, 1);
+
+            found = true;
+            break;
+        }
+    }
+
+    if(!found){
+        alert("No active checkout found.");
+        return;
+    }
+
+    saveData();
+    renderTable();
+    clearForm();
+}
+
+function deleteRecord(index){
+
+    if(confirm("Delete record?")){
+        records.splice(index,1);
+        saveData();
+        renderTable();
+    }
+
+}
+
+function renderTable(){
+
+    const search =
+    document.getElementById("search")
+    .value
+    .toLowerCase();
+
+    const body =
+    document.getElementById("tableBody");
+
+    body.innerHTML = "";
+
+    records.forEach((record,index)=>{
+
+        if(
+            !record.asset.toLowerCase().includes(search) &&
+            !record.student.toLowerCase().includes(search)
+        ){
+            return;
+        }
+
+        body.innerHTML += `
+        <tr>
+            <td>${record.asset}</td>
+            <td>${record.student}</td>
+            <td>${record.out}</td>
+            <td>${record.in}</td>
+            <td class="${
+                record.status==="Checked Out"
+                ?"status-out"
+                :"status-in"
+            }">
+                ${record.status}
+            </td>
+            <td>
+                <button
+                class="delete"
+                onclick="deleteRecord(${index})">
+                Delete
+                </button>
+            </td>
+        </tr>
+        `;
+    });
+
+}
+
+function updateStats(){
+
+    document.getElementById("totalAssets")
+    .textContent = records.length;
+
+    document.getElementById("checkedOut")
+    .textContent =
+    records.filter(
+        r=>r.status==="Checked Out"
+    ).length;
+
+    document.getElementById("returned")
+    .textContent =
+    records.filter(
+        r=>r.status==="Returned"
+    ).length;
+
+}
+
+function clearForm(){
+
+    document.getElementById("asset").value = "";
+    document.getElementById("student").value = "";
+
+    focusScanner();
+
+}
+
+function exportCSV(){
+
+    let csv =
+    "Asset Number,Student,Checked Out,Checked In,Status\n";
+
+    const allRecords = [
+        ...records,
+        ...historyRecords
+    ];
+
+    allRecords.forEach(r => {
+
+        csv += `"${r.asset}","${r.student}","${r.out}","${r.in}","${r.status}"\n`;
+
+    });
+
+    const blob =
+    new Blob([csv], {type:"text/csv"});
+
+    const url =
+    window.URL.createObjectURL(blob);
+
+    const a =
+    document.createElement("a");
+
+    a.href = url;
+    a.download = "chromebook_records.csv";
+    a.click();
+}
+
+document.getElementById("asset")
+.addEventListener("keypress",function(e){
+
+    if(e.key==="Enter"){
+        e.preventDefault();
+
+        if(
+            document.getElementById("student").value.trim()
+        ){
+            checkout();
+        }else{
+            document.getElementById("student").focus();
+        }
+    }
+
+});
+
+updateStats();
+renderTable();
+
+studentInput.addEventListener("keydown", function(e) {
+
+    if (e.key === "Enter") {
+        e.preventDefault();
+        checkout();
+    }
+
+});
+
+function focusScanner() {
+    assetInput.focus();
+    assetInput.select();
+}
+
+// Focus when page loads
+window.addEventListener("load", focusScanner);
+
+// Refocus if user clicks elsewhere
+document.addEventListener("click", () => {
+    setTimeout(focusScanner, 100);
+});
+
+// Refocus if browser tab becomes active
+document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+        focusScanner();
+    }
+});
+
+</script>
+
+</body>
+</html>
